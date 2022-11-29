@@ -3,23 +3,23 @@
 // string is considered invalid if it is not formatted as "$x", "$x.x", or "$x.xx"
 function validateAmount(input)
 {
-    const reg = /^(\$)(\d+)(?:\.(\d{1,2}))?$/g;
+    const reg = /^\$?(\d+)(?:\.(\d{1,2}))?$/;
     const match = reg.exec(input);
 
     if(match)
     {
-        let dollars = Number(match[2]) * 100;
+        let dollars = Number(match[1]) * 100;
 
-        if (match[3])
+        if (match[2])
         {
-            if(match[3].length === 1)
+            if(match[2].length === 1)
             {
-                let cents = Number(match[3]) * 10;
+                let cents = Number(match[2]) * 10;
                 return dollars + cents;
             }
             else
             {
-                let cents = Number(match[3]);
+                let cents = Number(match[2]);
                 return dollars + cents;
             }
         }
@@ -36,7 +36,6 @@ function validateAmount(input)
 // target: id of the text body element to print to
 function makeChange(input, target)
 {
-    //transfer number to internal buffer
     let result = "Your change is ";
     let remaining = validateAmount(document.getElementById(input).value);
 
